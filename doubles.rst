@@ -3,7 +3,7 @@
 =========================
 
 
-.. testsetup::
+.. testsetup:: *
 
     import sys
     import mock
@@ -70,7 +70,12 @@ Herman Sheremetyev.
 Simple fake object
 ~~~~~~~~~~~~~~~~~~
 
-.. doctest::
+.. testsetup:: simple_fake_object
+
+    from mocker import Mocker
+    mocker = Mocker()
+
+.. doctest:: simple_fake_object
 
     >>> # mock
     >>> my_mock = mock.Mock()
@@ -94,7 +99,6 @@ Simple fake object
     >>> assertEqual("value", my_mock.some_attribute)
 
     >>> # Mocker
-    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
@@ -110,7 +114,12 @@ Simple fake object
 Simple mock
 ~~~~~~~~~~~
 
-.. doctest::
+.. testsetup:: simple_mock
+
+    from mocker import Mocker
+    mocker = Mocker()
+
+.. doctest:: simple_mock
 
     >>> # mock
     >>> my_mock = mock.Mock()
@@ -133,7 +142,6 @@ Simple mock
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
-    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
@@ -146,7 +154,12 @@ Simple mock
 Creating partial mocks
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. doctest::
+.. testsetup:: creating_partial_mocks
+
+    from mocker import Mocker
+    mocker = Mocker()
+
+.. doctest:: creating_partial_mocks
 
     >>> # mock
     >>> my_mock = mock.Mock(spec=SomeObject)
@@ -167,7 +180,6 @@ Creating partial mocks
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
-    >>> mocker = Mocker()
     >>> some_object = somemodule.SomeClass()
     >>> my_mock = mocker.proxy(some_object)
     >>> my_mock.Get()
@@ -181,7 +193,12 @@ Creating partial mocks
 Ensure calls are made in specific order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. doctest::
+.. testsetup:: calls_in_specific_order
+
+    from mocker import Mocker
+    mocker = Mocker()
+
+.. doctest:: calls_in_specific_order
 
     >>> # mock
     >>> my_mock = mock.Mock(spec=SomeObject)
@@ -212,7 +229,6 @@ Ensure calls are made in specific order
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
-    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> with mocker.order():
     ...     my_mock.method1()
@@ -232,7 +248,12 @@ Ensure calls are made in specific order
 Raising exceptions
 ~~~~~~~~~~~~~~~~~~
 
-.. doctest::
+.. testsetup:: raising_exceptions
+
+    from mocker import Mocker
+    mocker = Mocker()
+
+.. doctest:: raising_exceptions
 
     >>> # mock
     >>> my_mock = mock.Mock()
@@ -253,7 +274,6 @@ Raising exceptions
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
-    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
