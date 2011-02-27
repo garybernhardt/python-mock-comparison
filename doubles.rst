@@ -36,7 +36,6 @@ These are:
 * `mox <http://pypi.python.org/pypi/mox>`_
 * `Mocker <http://niemeyer.net/mocker>`_
 * `pMock <http://pmock.sourceforge.net/>`_
-* `python-mock <http://python-mock.sourceforge.net/>`_
 
 Mocking frameworks not yet represented here are
 `MiniMock <http://pypi.python.org/pypi/MiniMock>`_,
@@ -92,12 +91,6 @@ Simple fake object
 
 ::
 
-    # python-mock
-    mymock = mock.Mock( {"some_method": "calculated value"})
-    mymock.some_attribute = "value"
-    assertEqual("calculated value", mymock.some_method())
-    assertEqual("value", mock.some_attribute)
-
     # pMock
     mock = pmock.Mock()
     mock.some_attribute = "value"
@@ -142,11 +135,6 @@ Simple mock
 
 ::
 
-    # python-mock
-    mymock = mock.Mock( {"some_method" : "value"})
-    assertEqual("value", mymock.some_method())
-    mock.mockCheckCall(self, 0, "some_method")
-
     # pMock
     mock = pmock.Mock()
     mock.expects(pmock.once()).some_method().will(pmock.return_value("value"))
@@ -186,11 +174,6 @@ Creating partial mocks
     >>> mox.Verify(my_mock)
 
 ::
-
-    # python-mock
-    mock = mock.Mock({"some_method": "value"}, SomeObject)
-    assertEqual("value", mock.some_method())
-    mock.mockCheckCall(self, 0, "some_method")
 
     # pMock
     # Doesn't seem to have support for partial mocks
@@ -239,9 +222,6 @@ Ensure calls are made in specific order
 
 ::
 
-    # python-mock
-    # Doesn't seem to support call ordering
-
     # pMock
     mock = pmock.Mock()
     mock.expects(pmock.once()).some_method().will(pmock.return_value("value"))
@@ -285,12 +265,6 @@ Raising exceptions
 
 ::
 
-    # python-mock
-    mock = mock.Mock()
-    mock.mockSetExpectation('some_method', expectException(SomeException))
-    assertRaises(SomeException, mock.some_method)
-    mock.mockCheckCall(self, 0, "some_method")
-
     # pMock
     mock = pmock.Mock()
     mock.expects(pmock.once()).some_method().will(pmock.raise_exception(SomeException("message")))
@@ -331,9 +305,6 @@ Override new instances of a class
     # >>> assertEqual(some_other_object, somemodule.SomeClass())
 
 ::
-
-    # python-mock
-    # (TODO)
 
     # pMock
     # (TODO)
