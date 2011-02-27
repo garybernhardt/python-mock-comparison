@@ -7,6 +7,7 @@
 
     import sys
     import mock
+    from flexmock import flexmock
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
@@ -19,6 +20,9 @@
         assert False, ("%s not raised" % Exc)
 
     sys.modules['somemodule'] = somemodule = mock.Mock(name='somemodule')
+    class SomeClass(object):
+        pass
+    somemodule.SomeClass = SomeClass
     class SomeException(Exception):
         some_method = method1 = method2 = None
     some_other_object = SomeObject = SomeException
@@ -73,12 +77,12 @@ Simple fake object
     >>> assertEqual("calculated value", my_mock.some_method())
     >>> assertEqual("value", my_mock.some_attribute)
 
-::
+    >>> # Flexmock
+    >>> some_object = flexmock(some_method=lambda: "calculated value", some_attribute="value")
+    >>> assertEqual("calculated value", some_object.some_method())
+    >>> assertEqual("value", some_object.some_attribute)
 
-    # Flexmock
-    mock = flexmock(some_method=lambda: "calculated value", some_attribute="value")
-    assertEqual("calculated value", mock.some_method())
-    assertEqual("value", mock.some_attribute)
+::
 
     # Mox
     mock = mox.MockAnything()
@@ -122,12 +126,13 @@ Simple mock
     >>> assertEqual("value", my_mock.some_method())
     >>> my_mock.some_method.assert_called_once_with()
 
-::
+    >>> # Flexmock
+    >>> some_object = flexmock()
+    >>> some_object.should_receive("some_method").and_return("value").once
+    <flexmock.Expectation object at ...>
+    >>> assertEqual("value", some_object.some_method())
 
-    # Flexmock
-    mock = flexmock()
-    mock.should_receive("some_method").and_return("value").once
-    assertEqual("value", mock.some_method())
+::
 
     # Mox
     mock = mox.MockAnything()
@@ -166,11 +171,12 @@ Creating partial mocks
     >>> my_mock.some_method.return_value = "value"
     >>> assertEqual("value", my_mock.some_method())
 
-::
+    >>> # Flexmock
+    >>> flexmock(SomeObject).should_receive("some_method").and_return('value')
+    <flexmock.Expectation object at ...>
+    >>> assertEqual("value", SomeObject().some_method())
 
-    # Flexmock
-    flexmock(SomeObject).should_receive("some_method").and_return('value')
-    assertEqual("value", mock.some_method())
+::
 
     # Mox
     mock = mox.MockObject(SomeObject)
@@ -209,12 +215,14 @@ Ensure calls are made in specific order
     <mock.Mock object at 0x...>
     >>> assertEqual(my_mock.method_calls, [('method1',), ('method2',)])
 
-::
+    >>> # Flexmock
+    >>> some_object = flexmock(SomeObject)
+    >>> some_object.should_receive('method1').once.ordered.and_return('first thing')
+    <flexmock.Expectation object at ...>
+    >>> some_object.should_receive('method2').once.ordered.and_return('second thing')
+    <flexmock.Expectation object at ...>
 
-    # Flexmock
-    mock = flexmock(SomeObject)
-    mock.should_receive('method1').once.ordered.and_return('first thing')
-    mock.should_receive('method2').once.ordered.and_return('second thing')
+::
 
     # Mox
     mock = mox.MockObject(SomeObject)
@@ -254,12 +262,13 @@ Raising exceptions
     >>> my_mock.some_method.side_effect = SomeException("message")
     >>> assertRaises(SomeException, my_mock.some_method)
 
-::
+    >>> # Flexmock
+    >>> some_object = flexmock()
+    >>> some_object.should_receive("some_method").and_raise(SomeException("message"))
+    <flexmock.Expectation object at ...>
+    >>> assertRaises(SomeException, some_object.some_method)
 
-    # Flexmock
-    mock = flexmock()
-    mock.should_receive("some_method").and_raise(SomeException("message"))
-    assertRaises(SomeException, mock.some_method)
+::
 
     # Mox
     mock = mox.MockAnything()
@@ -300,12 +309,12 @@ Override new instances of a class
     ...     assertEqual(some_other_object, somemodule.Someclass())
     ...
 
+    >>> # Flexmock
+    >>> flexmock(somemodule.SomeClass, new_instances=some_other_object)
+    <flexmock.UnittestFlexMock object at ...>
+    >>> assertEqual(some_other_object, somemodule.SomeClass())
 
 ::
-
-    # Flexmock
-    flexmock(some_module.SomeClass, new_instances=some_other_object)
-    assertEqual(some_other_object, some_module.SomeClass())
 
     # Mox
     # (you will probably have mox.Mox() available as self.mox in a real test)
@@ -344,10 +353,12 @@ Call the same method multiple times
     <mock.Mock object at 0x...>
     >>> assert my_mock.some_method.call_count >= 2
 
-::
+    >>> # Flexmock (verifies that the method gets called at least twice)
+    >>> some_object = flexmock()
+    >>> flexmock(some_object).should_receive('some_method').at_least.twice
+    <flexmock.Expectation object at ...>
 
-    # Flexmock # (verifies that the method gets called at least twice)
-    flexmock(some_object).should_receive('some_method').at_least.twice
+::
 
     # Mox
     # (does not support variable number of calls, so you need to create a new entry for each explicit call)
@@ -379,15 +390,17 @@ Mock chained methods
     >>> assertEqual('some value', my_mock.method1().method2().method3(1, 2))
     >>> method3.assert_called_once_with(1, 2)
 
-::
+    >>> # Flexmock
+    >>> # (intermediate method calls are automatically assigned to temporary fake objects
+    >>> # and can be called with any arguments)
+    >>> arg1, arg2 = 'arg1', 'arg2'
+    >>> flexmock(some_object).should_receive(
+    ...     'method1.method2.method3'
+    ... ).with_args(arg1, arg2).and_return('some value')
+    <flexmock.Expectation object at ...>
+    >>> assertEqual('some value', some_object.method1().method2().method3(arg1, arg2))
 
-    # Flexmock
-    # (intermediate method calls are automatically assigned to temporary fake objects
-    # and can be called with any arguments)
-    flexmock(some_object).should_receive(
-        'method1.method2.method3'
-    ).with_args(arg1, arg2).and_return('some value')
-    assertEqual('some_value', some_object.method1().method2().method3(arg1, arg2))
+::
 
     # Mox
     mock = mox.MockObject(some_object)
