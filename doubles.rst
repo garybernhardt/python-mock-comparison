@@ -35,7 +35,6 @@ These are:
 * `flexmock <http://pypi.python.org/pypi/flexmock>`_
 * `mox <http://pypi.python.org/pypi/mox>`_
 * `Mocker <http://niemeyer.net/mocker>`_
-* `pMock <http://pmock.sourceforge.net/>`_
 
 Mocking frameworks not yet represented here are
 `MiniMock <http://pypi.python.org/pypi/MiniMock>`_,
@@ -91,13 +90,6 @@ Simple fake object
 
 ::
 
-    # pMock
-    mock = pmock.Mock()
-    mock.some_attribute = "value"
-    mock.expects().some_method().will(pmock.return_value("calculated value"))
-    assertEqual("value", mock.some_method())
-    assertEqual("value", mock.some_attribute)
-
     # Mocker
     mock = mocker.mock()
     mock.some_method()
@@ -135,12 +127,6 @@ Simple mock
 
 ::
 
-    # pMock
-    mock = pmock.Mock()
-    mock.expects(pmock.once()).some_method().will(pmock.return_value("value"))
-    assertEqual("value", mock.some_method())
-    mock.verify()
-
     # Mocker
     mock = mocker.mock()
     mock.some_method()
@@ -174,9 +160,6 @@ Creating partial mocks
     >>> mox.Verify(my_mock)
 
 ::
-
-    # pMock
-    # Doesn't seem to have support for partial mocks
 
     # Mocker
     mock = mocker.mock(SomeObject)
@@ -222,13 +205,6 @@ Ensure calls are made in specific order
 
 ::
 
-    # pMock
-    mock = pmock.Mock()
-    mock.expects(pmock.once()).some_method().will(pmock.return_value("value"))
-    mock_db.expects(pmock.once()).method1().id("method1")
-    mock_db.expects(pmock.once()).method2().id("method2").after("method1")
-    mock.verify()
-
     # Mocker
     mock = mocker.mock()
     with mocker.order():
@@ -265,12 +241,6 @@ Raising exceptions
 
 ::
 
-    # pMock
-    mock = pmock.Mock()
-    mock.expects(pmock.once()).some_method().will(pmock.raise_exception(SomeException("message")))
-    assertRaises(SomeException, mock.some_method)
-    mock.verify()
-
     # Mocker
     mock = mocker.mock()
     mock.some_method()
@@ -305,9 +275,6 @@ Override new instances of a class
     # >>> assertEqual(some_other_object, somemodule.SomeClass())
 
 ::
-
-    # pMock
-    # (TODO)
 
     # Mocker
     # (TODO)
@@ -355,9 +322,6 @@ Call the same method multiple times
     # Python Mock module
     # (TODO)
 
-    # pMock
-    # (TODO)
-
     # Mocker
     # (TODO)
 
@@ -403,9 +367,6 @@ Mock chained methods
 ::
 
     # Python Mock module
-    # (TODO)
-
-    # pMock
     # (TODO)
 
     # Mocker
