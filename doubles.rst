@@ -8,6 +8,7 @@
     import sys
     import mock
     from flexmock import flexmock
+    import mox
     import somemodule
 
     def assertEqual(a, b):
@@ -22,7 +23,8 @@
 
     class SomeException(Exception):
         some_method = method1 = method2 = None
-    some_other_object = SomeObject = SomeException
+    SomeObject = SomeException
+    some_other_object = somemodule.SomeClass()
 
 
 A side-by-side comparison of how to accomplish some basic tasks with mock and
@@ -79,15 +81,16 @@ Simple fake object
     >>> assertEqual("calculated value", some_object.some_method())
     >>> assertEqual("value", some_object.some_attribute)
 
-::
+    >>> # Mox
+    >>> my_mock = mox.MockAnything()
+    >>> my_mock.some_method().AndReturn("calculated value")
+    'calculated value'
+    >>> my_mock.some_attribute = "value"
+    >>> mox.Replay(my_mock)
+    >>> assertEqual("calculated value", my_mock.some_method())
+    >>> assertEqual("value", my_mock.some_attribute)
 
-    # Mox
-    mock = mox.MockAnything()
-    mock.some_method().AndReturn("calculated value")
-    mock.some_attribute = "value"
-    mox.Replay(mock)
-    assertEqual("calculated value", mock.some_method())
-    assertEqual("value", mock.some_attribute)
+::
 
     # python-mock
     mymock = mock.Mock( {"some_method": "calculated value"})
@@ -129,14 +132,15 @@ Simple mock
     <flexmock.Expectation object at ...>
     >>> assertEqual("value", some_object.some_method())
 
-::
+    >>> # Mox
+    >>> my_mock = mox.MockAnything()
+    >>> my_mock.some_method().AndReturn("value")
+    'value'
+    >>> mox.Replay(my_mock)
+    >>> assertEqual("value", my_mock.some_method())
+    >>> mox.Verify(my_mock)
 
-    # Mox
-    mock = mox.MockAnything()
-    mock.some_method().AndReturn("value")
-    mox.Replay(mock)
-    assertEqual("value", mock.some_method())
-    mox.Verify(mock)
+::
 
     # python-mock
     mymock = mock.Mock( {"some_method" : "value"})
@@ -173,14 +177,15 @@ Creating partial mocks
     <flexmock.Expectation object at ...>
     >>> assertEqual("value", SomeObject().some_method())
 
-::
+    >>> # Mox
+    >>> my_mock = mox.MockObject(SomeObject)
+    >>> my_mock.some_method().AndReturn("value")
+    'value'
+    >>> mox.Replay(my_mock)
+    >>> assertEqual("value", my_mock.some_method())
+    >>> mox.Verify(my_mock)
 
-    # Mox
-    mock = mox.MockObject(SomeObject)
-    mock.some_method().AndReturn("value")
-    mox.Replay(mock)
-    assertEqual("value", mock.some_method())
-    mox.Verify(mock)
+::
 
     # python-mock
     mock = mock.Mock({"some_method": "value"}, SomeObject)
@@ -219,14 +224,20 @@ Ensure calls are made in specific order
     >>> some_object.should_receive('method2').once.ordered.and_return('second thing')
     <flexmock.Expectation object at ...>
 
-::
+    >>> # Mox
+    >>> my_mock = mox.MockObject(SomeObject)
+    >>> my_mock.method1().AndReturn('first thing')
+    'first thing'
+    >>> my_mock.method2().AndReturn('second thing')
+    'second thing'
+    >>> mox.Replay(my_mock)
+    >>> my_mock.method1()
+    'first thing'
+    >>> my_mock.method2()
+    'second thing'
+    >>> mox.Verify(my_mock)
 
-    # Mox
-    mock = mox.MockObject(SomeObject)
-    mock.method1().AndReturn('first thing')
-    mock.method2().AndReturn('second thing')
-    mox.Replay(mock)
-    mox.Verify(mock)
+::
 
     # python-mock
     # Doesn't seem to support call ordering
@@ -265,14 +276,14 @@ Raising exceptions
     <flexmock.Expectation object at ...>
     >>> assertRaises(SomeException, some_object.some_method)
 
-::
+    >>> # Mox
+    >>> my_mock = mox.MockAnything()
+    >>> my_mock.some_method().AndRaise(SomeException("message"))
+    >>> mox.Replay(my_mock)
+    >>> assertRaises(SomeException, my_mock.some_method)
+    >>> mox.Verify(my_mock)
 
-    # Mox
-    mock = mox.MockAnything()
-    mock.some_method().AndRaise(SomeException("message"))
-    mox.Replay(mock)
-    assertRaises(SomeException, mock.some_method)
-    mox.Verify(mock)
+::
 
     # python-mock
     mock = mock.Mock()
@@ -311,14 +322,15 @@ Override new instances of a class
     <flexmock.UnittestFlexMock object at ...>
     >>> assertEqual(some_other_object, somemodule.SomeClass())
 
-::
+    # >>> # Mox
+    # >>> # XXX FAILING
+    # >>> # (you will probably have mox.Mox() available as self.mox in a real test)
+    # >>> mox.Mox().StubOutWithMock(somemodule, 'SomeClass', use_mock_anything=True)
+    # >>> somemodule.SomeClass().AndReturn(some_other_object)
+    # >>> mox.ReplayAll()
+    # >>> assertEqual(some_other_object, somemodule.SomeClass())
 
-    # Mox
-    # (you will probably have mox.Mox() available as self.mox in a real test)
-    mox.Mox().StubOutWithMock(some_module, 'SomeClass', use_mock_anything=True)
-    some_module.SomeClass().AndReturn(some_other_object)
-    mox.ReplayAll()
-    assertEqual(some_other_object, some_module.SomeClass())
+::
 
     # python-mock
     # (TODO)
@@ -355,15 +367,19 @@ Call the same method multiple times
     >>> flexmock(some_object).should_receive('some_method').at_least.twice
     <flexmock.Expectation object at ...>
 
-::
+    >>> # Mox
+    >>> # (does not support variable number of calls, so you need to create a new entry for each explicit call)
+    >>> my_mock = mox.MockObject(some_object)
+    >>> my_mock.some_method(mox.IgnoreArg(), mox.IgnoreArg())
+    <mox.MockMethod object at ...>
+    >>> my_mock.some_method(mox.IgnoreArg(), mox.IgnoreArg())
+    <mox.MockMethod object at ...>
+    >>> mox.Replay(my_mock)
+    >>> my_mock.some_method(some_object, some_object)
+    >>> my_mock.some_method(some_object, some_object)
+    >>> mox.Verify(my_mock)
 
-    # Mox
-    # (does not support variable number of calls, so you need to create a new entry for each explicit call)
-    mock = mox.MockObject(some_object)
-    mock.some_method(mox.IgnoreArg(), mox.IgnoreArg())
-    mock.some_method(mox.IgnoreArg(), mox.IgnoreArg())
-    mox.Replay(mock)
-    mox.Verify(mock)
+::
 
     # Python Mock module
     # (TODO)
@@ -397,18 +413,23 @@ Mock chained methods
     <flexmock.Expectation object at ...>
     >>> assertEqual('some value', some_object.method1().method2().method3(arg1, arg2))
 
-::
+    # >>> # Mox
+    # >>> # XXX FAILING
+    # >>> some_object = somemodule.SomeClass()
+    # >>> my_mock = mox.MockObject(some_object)
+    # >>> my_mock2 = mox.MockAnything()
+    # >>> my_mock3 = mox.MockAnything()
+    # >>> my_mock.method1().AndReturn(my_mock)
+    # <MockAnything instance>
+    # >>> my_mock2.method2().AndReturn(my_mock2)
+    # <MockAnything instance>
+    # >>> my_mock3.method3(arg1, arg2).AndReturn('some_value')
+    # 'some_value'
+    # >>> mox.Mox().ReplayAll()
+    # >>> assertEqual("some_value", some_object.method1().method2().method3(arg1, arg2))
+    # >>> self.mox.VerifyAll()
 
-    # Mox
-    mock = mox.MockObject(some_object)
-    mock2 = mox.MockAnything()
-    mock3 = mox.MockAnything()
-    mock.method1().AndReturn(mock1)
-    mock2.method2().AndReturn(mock2)
-    mock3.method3(arg1, arg2).AndReturn('some_value')
-    self.mox.ReplayAll()
-    assertEqual("some_value", some_object.method1().method2().method3(arg1, arg2))
-    self.mox.VerifyAll()
+::
 
     # Python Mock module
     # (TODO)
