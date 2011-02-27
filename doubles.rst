@@ -10,6 +10,7 @@
     from flexmock import flexmock
     import mox
     import somemodule
+    from mocker import Mocker
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
@@ -92,16 +93,18 @@ Simple fake object
     >>> assertEqual("calculated value", my_mock.some_method())
     >>> assertEqual("value", my_mock.some_attribute)
 
-::
-
-    # Mocker
-    mock = mocker.mock()
-    mock.some_method()
-    mocker.result("calculated value")
-    mocker.replay()
-    mock.some_attribute = "value"
-    assertEqual("calculated value", mock.some_method())
-    assertEqual("value", mock.some_attribute)
+    >>> # Mocker
+    >>> mocker = Mocker()
+    >>> my_mock = mocker.mock()
+    >>> my_mock.some_method()
+    <mocker.Mock object at ...>
+    >>> mocker.result("calculated value")
+    >>> my_mock.some_attribute
+    <mocker.Mock object at ...>
+    >>> mocker.result("value")
+    >>> mocker.replay()
+    >>> assertEqual("calculated value", my_mock.some_method())
+    >>> assertEqual("value", my_mock.some_attribute)
 
 
 Simple mock
@@ -129,15 +132,15 @@ Simple mock
     >>> assertEqual("value", my_mock.some_method())
     >>> mox.Verify(my_mock)
 
-::
-
-    # Mocker
-    mock = mocker.mock()
-    mock.some_method()
-    mocker.result("value")
-    mocker.replay()
-    assertEqual("value", mock.some_method())
-    mocker.verify()
+    >>> # Mocker
+    >>> mocker = Mocker()
+    >>> my_mock = mocker.mock()
+    >>> my_mock.some_method()
+    <mocker.Mock object at ...>
+    >>> mocker.result("value")
+    >>> mocker.replay()
+    >>> assertEqual("value", my_mock.some_method())
+    >>> mocker.verify()
 
 
 Creating partial mocks
@@ -163,15 +166,16 @@ Creating partial mocks
     >>> assertEqual("value", my_mock.some_method())
     >>> mox.Verify(my_mock)
 
-::
-
-    # Mocker
-    mock = mocker.mock(SomeObject)
-    mock.Get()
-    mocker.result("value")
-    mocker.replay()
-    assertEqual("value", mock.some_method())
-    mocker.verify()
+    >>> # Mocker
+    >>> mocker = Mocker()
+    >>> some_object = somemodule.SomeClass()
+    >>> my_mock = mocker.proxy(some_object)
+    >>> my_mock.Get()
+    <mocker.Mock object at ...>
+    >>> mocker.result("value")
+    >>> mocker.replay()
+    >>> assertEqual("value", my_mock.Get())
+    >>> mocker.verify()
 
 
 Ensure calls are made in specific order
@@ -207,17 +211,22 @@ Ensure calls are made in specific order
     'second thing'
     >>> mox.Verify(my_mock)
 
-::
-
-    # Mocker
-    mock = mocker.mock()
-    with mocker.order():
-        mock.method1()
-        mocker.result('first thing')
-        mock.method2()
-        mocker.result('second thing')
-        mocker.replay()
-        mocker.verify()
+    >>> # Mocker
+    >>> mocker = Mocker()
+    >>> my_mock = mocker.mock()
+    >>> with mocker.order():
+    ...     my_mock.method1()
+    ...     mocker.result('first thing')
+    ...     my_mock.method2()
+    ...     mocker.result('second thing')
+    ...     mocker.replay()
+    ...     my_mock.method1()
+    ...     my_mock.method2()
+    ...     mocker.verify()
+    <mocker.Mock object at ...>
+    <mocker.Mock object at ...>
+    'first thing'
+    'second thing'
 
 
 Raising exceptions
@@ -243,15 +252,15 @@ Raising exceptions
     >>> assertRaises(SomeException, my_mock.some_method)
     >>> mox.Verify(my_mock)
 
-::
-
-    # Mocker
-    mock = mocker.mock()
-    mock.some_method()
-    mocker.throw(SomeException("message"))
-    mocker.replay()
-    assertRaises(SomeException, mock.some_method)
-    mocker.verify()
+    >>> # Mocker
+    >>> mocker = Mocker()
+    >>> my_mock = mocker.mock()
+    >>> my_mock.some_method()
+    <mocker.Mock object at ...>
+    >>> mocker.throw(SomeException("message"))
+    >>> mocker.replay()
+    >>> assertRaises(SomeException, my_mock.some_method)
+    >>> mocker.verify()
 
 
 Override new instances of a class
@@ -278,10 +287,8 @@ Override new instances of a class
     # >>> mox.ReplayAll()
     # >>> assertEqual(some_other_object, somemodule.SomeClass())
 
-::
-
-    # Mocker
-    # (TODO)
+    >>> # Mocker
+    >>> # (TODO)
 
 
 Call the same method multiple times
@@ -321,10 +328,8 @@ Call the same method multiple times
     >>> my_mock.some_method(some_object, some_object)
     >>> mox.Verify(my_mock)
 
-::
-
-    # Mocker
-    # (TODO)
+    >>> # Mocker
+    >>> # (TODO)
 
 
 Mock chained methods
@@ -365,10 +370,8 @@ Mock chained methods
     # >>> assertEqual("some_value", some_object.method1().method2().method3(arg1, arg2))
     # >>> self.mox.VerifyAll()
 
-::
-
-    # Mocker
-    # (TODO)
+    >>> # Mocker
+    >>> # (TODO)
 
 
 Mocking a context manager
