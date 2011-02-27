@@ -323,9 +323,6 @@ Call the same method multiple times
 
 ::
 
-    # Python Mock module
-    # (TODO)
-
     # Mocker
     # (TODO)
 
@@ -369,9 +366,6 @@ Mock chained methods
     # >>> self.mox.VerifyAll()
 
 ::
-
-    # Python Mock module
-    # (TODO)
 
     # Mocker
     # (TODO)
