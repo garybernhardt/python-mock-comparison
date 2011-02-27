@@ -36,6 +36,10 @@ These are:
 * `mox <http://pypi.python.org/pypi/mox>`_
 * `Mocker <http://niemeyer.net/mocker>`_
 
+Some mocking tools are intentionally omitted: 
+`python-mock <http://python-mock.sourceforge.net/>`_ (last release in 2005) and
+`pmock <http://pmock.sourceforge.net/>`_ (last release in 2004; doesn't import in modern Pythons).
+
 Mocking frameworks not yet represented here are
 `MiniMock <http://pypi.python.org/pypi/MiniMock>`_,
 `dingus <http://pypi.python.org/pypi/dingus>`_ and
