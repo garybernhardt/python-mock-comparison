@@ -10,7 +10,6 @@
     from flexmock import flexmock
     import mox
     import somemodule
-    from mocker import Mocker
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
