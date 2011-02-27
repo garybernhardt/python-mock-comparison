@@ -8,6 +8,7 @@
     import sys
     import mock
     from flexmock import flexmock
+    import somemodule
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
@@ -19,10 +20,6 @@
             return
         assert False, ("%s not raised" % Exc)
 
-    sys.modules['somemodule'] = somemodule = mock.Mock(name='somemodule')
-    class SomeClass(object):
-        pass
-    somemodule.SomeClass = SomeClass
     class SomeException(Exception):
         some_method = method1 = method2 = None
     some_other_object = SomeObject = SomeException
@@ -304,9 +301,9 @@ Override new instances of a class
 .. doctest::
 
     >>> # mock
-    >>> with mock.patch('somemodule.Someclass') as MockClass:
+    >>> with mock.patch('somemodule.SomeClass') as MockClass:
     ...     MockClass.return_value = some_other_object
-    ...     assertEqual(some_other_object, somemodule.Someclass())
+    ...     assertEqual(some_other_object, somemodule.SomeClass())
     ...
 
     >>> # Flexmock
