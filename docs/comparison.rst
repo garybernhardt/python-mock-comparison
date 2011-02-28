@@ -28,8 +28,8 @@
     some_other_object = somemodule.SomeClass()
 
 
-A side-by-side comparison of how to accomplish some basic tasks with popular
-Python mocking libraries and frameworks.
+This is a side-by-side comparison of how to accomplish some basic tasks with
+popular Python mocking libraries and frameworks.
 
 The libraries are:
 
@@ -47,7 +47,7 @@ Some mocking tools are intentionally omitted:
 Other mocking frameworks are not yet represented here:
 
 * `MiniMock <http://pypi.python.org/pypi/MiniMock>`_
-* `fudge <http://pypi.python.org/pypi/fudge>`_.
+* `fudge <http://pypi.python.org/pypi/fudge>`_
 
 This comparison is by no means complete, and also may not be fully idiomatic
 for all the libraries represented. *Please* contribute corrections and missing
