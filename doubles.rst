@@ -28,43 +28,45 @@
     some_other_object = somemodule.SomeClass()
 
 
-A side-by-side comparison of how to accomplish some basic tasks with mock and
-some other popular Python mocking libraries and frameworks.
+A side-by-side comparison of how to accomplish some basic tasks with popular
+Python mocking libraries and frameworks.
 
 These are:
 
+* `mock <http://www.voidspace.org.uk/python/mock/>`_
 * `flexmock <http://pypi.python.org/pypi/flexmock>`_
 * `mox <http://pypi.python.org/pypi/mox>`_
 * `Mocker <http://niemeyer.net/mocker>`_
 * `Dingus <http://pypi.python.org/pypi/dingus>`_
 
 Some mocking tools are intentionally omitted: 
-`python-mock <http://python-mock.sourceforge.net/>`_ (last release in 2005) and
-`pmock <http://pmock.sourceforge.net/>`_ (last release in 2004; doesn't import in modern Pythons).
 
-Mocking frameworks not yet represented here are
-`MiniMock <http://pypi.python.org/pypi/MiniMock>`_ and
-`fudge <http://pypi.python.org/pypi/fudge>`_.
+* `python-mock <http://python-mock.sourceforge.net/>`_ (last release in 2005)
+* `pmock <http://pmock.sourceforge.net/>`_ (last release in 2004 and doesn't import in modern Pythons).
+
+Mocking frameworks not yet represented here:
+
+* `MiniMock <http://pypi.python.org/pypi/MiniMock>`_
+* `fudge <http://pypi.python.org/pypi/fudge>`_.
 
 This comparison is by no means complete, and also may not be fully idiomatic
 for all the libraries represented. *Please* contribute corrections, missing
-comparisons, or comparisons for additional libraries to the `mock issue
-tracker <https://code.google.com/p/mock/issues/list>`_.
+comparisons, or comparisons for additional libraries to TODO.
 
-This comparison page was originally created by the `Mox project
-<https://code.google.com/p/pymox/wiki/MoxComparison>`_ and then extended for
-`flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by
-Herman Sheremetyev.
+History of this document:
+
+* Originally created by the `Mox project <https://code.google.com/p/pymox/wiki/MoxComparison>`_
+* Extended for `flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by Herman Sheremetyev
+* Further edited for use in the `mock documentation <http://www.voidspace.org.uk/python/mock/compare.html>`_ by Michael Foord
+* Generalizd with doctests for all libraries by Gary Bernhardt
 
 .. note::
 
-    The examples tasks here were originally created by Mox which is a mocking
-    *framework* rather than a library like mock. The tasks shown naturally
-    exemplify tasks that frameworks are good at and not the ones they make
-    harder. In particular you can take a `Mock` or `MagicMock` object and use
-    it in any way you want with no up-front configuration.
-
-    The examples for mock here assume version 0.7.0.
+    Many examples tasks here were originally created by Mox which is a mocking
+    *framework* rather than a *library* like mock or Dingus. Some tasks shown
+    naturally exemplify tasks that frameworks are good at and not the ones they
+    make harder. In particular you can take a `Mock`, `MagicMock`, or Dingus
+    object and use it in any way you want with no up-front configuration.
 
 
 Simple fake object
