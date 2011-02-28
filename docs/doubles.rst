@@ -31,7 +31,7 @@
 A side-by-side comparison of how to accomplish some basic tasks with popular
 Python mocking libraries and frameworks.
 
-These are:
+The libraries are:
 
 * `mock <http://www.voidspace.org.uk/python/mock/>`_
 * `flexmock <http://pypi.python.org/pypi/flexmock>`_
@@ -44,14 +44,16 @@ Some mocking tools are intentionally omitted:
 * `python-mock <http://python-mock.sourceforge.net/>`_ (last release in 2005)
 * `pmock <http://pmock.sourceforge.net/>`_ (last release in 2004 and doesn't import in modern Pythons).
 
-Mocking frameworks not yet represented here:
+Other mocking frameworks are not yet represented here:
 
 * `MiniMock <http://pypi.python.org/pypi/MiniMock>`_
 * `fudge <http://pypi.python.org/pypi/fudge>`_.
 
 This comparison is by no means complete, and also may not be fully idiomatic
-for all the libraries represented. *Please* contribute corrections, missing
-comparisons, or comparisons for additional libraries to TODO.
+for all the libraries represented. *Please* contribute corrections and missing
+comparisons to the `GitHub project
+<https://github.com/garybernhardt/python-mock-comparison>`_. Pull requests are
+appreciated.
 
 History of this document:
 
@@ -62,7 +64,7 @@ History of this document:
 
 .. note::
 
-    Many examples tasks here were originally created by Mox which is a mocking
+    Many examples tasks here were originally created by Mox, which is a mocking
     *framework* rather than a *library* like mock or Dingus. Some tasks shown
     naturally exemplify tasks that frameworks are good at and not the ones they
     make harder. In particular you can take a `Mock`, `MagicMock`, or Dingus
