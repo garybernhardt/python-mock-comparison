@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'doubles'
+project = u'Mock Library Comparison'
 copyright = u'2011, Gary Bernhardt'
 
 # The version info for the project you're documenting, acts as replacement for

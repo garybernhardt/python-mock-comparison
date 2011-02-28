@@ -6,7 +6,7 @@
 .. toctree::
     :maxdepth: 2
 
-    doubles
+    comparison
 
 Indices and tables
 ==================
