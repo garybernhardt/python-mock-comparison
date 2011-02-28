@@ -37,14 +37,12 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-doubles-s-documentation">
-<h1>Welcome to doubles&#8217;s documentation!<a class="headerlink" href="#welcome-to-doubles-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="toctree-wrapper compound">
 <span id="document-doubles"></span><div class="section" id="mock-library-comparison">
-<h2>Mock Library Comparison<a class="headerlink" href="#mock-library-comparison" title="Permalink to this headline">¶</a></h2>
+<h1>Mock Library Comparison<a class="headerlink" href="#mock-library-comparison" title="Permalink to this headline">¶</a></h1>
 <p>A side-by-side comparison of how to accomplish some basic tasks with popular
 Python mocking libraries and frameworks.</p>
-<p>These are:</p>
+<p>The libraries are:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.voidspace.org.uk/python/mock/">mock</a></li>
 <li><a class="reference external" href="http://pypi.python.org/pypi/flexmock">flexmock</a></li>
@@ -57,14 +55,15 @@ Python mocking libraries and frameworks.</p>
 <li><a class="reference external" href="http://python-mock.sourceforge.net/">python-mock</a> (last release in 2005)</li>
 <li><a class="reference external" href="http://pmock.sourceforge.net/">pmock</a> (last release in 2004 and doesn&#8217;t import in modern Pythons).</li>
 </ul>
-<p>Mocking frameworks not yet represented here:</p>
+<p>Other mocking frameworks are not yet represented here:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://pypi.python.org/pypi/MiniMock">MiniMock</a></li>
 <li><a class="reference external" href="http://pypi.python.org/pypi/fudge">fudge</a>.</li>
 </ul>
 <p>This comparison is by no means complete, and also may not be fully idiomatic
-for all the libraries represented. <em>Please</em> contribute corrections, missing
-comparisons, or comparisons for additional libraries to TODO.</p>
+for all the libraries represented. <em>Please</em> contribute corrections and missing
+comparisons to the <a class="reference external" href="https://github.com/garybernhardt/python-mock-comparison">GitHub project</a>. Pull requests are
+appreciated.</p>
 <p>History of this document:</p>
 <ul class="simple">
 <li>Originally created by the <a class="reference external" href="https://code.google.com/p/pymox/wiki/MoxComparison">Mox project</a></li>
@@ -74,14 +73,14 @@ comparisons, or comparisons for additional libraries to TODO.</p>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Many examples tasks here were originally created by Mox which is a mocking
+<p class="last">Many examples tasks here were originally created by Mox, which is a mocking
 <em>framework</em> rather than a <em>library</em> like mock or Dingus. Some tasks shown
 naturally exemplify tasks that frameworks are good at and not the ones they
 make harder. In particular you can take a <cite>Mock</cite>, <cite>MagicMock</cite>, or Dingus
 object and use it in any way you want with no up-front configuration.</p>
 </div>
 <div class="section" id="simple-fake-object">
-<h3>Simple fake object<a class="headerlink" href="#simple-fake-object" title="Permalink to this headline">¶</a></h3>
+<h2>Simple fake object<a class="headerlink" href="#simple-fake-object" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&quot;calculated value&quot;</span>
@@ -124,7 +123,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="simple-mock">
-<h3>Simple mock<a class="headerlink" href="#simple-mock" title="Permalink to this headline">¶</a></h3>
+<h2>Simple mock<a class="headerlink" href="#simple-mock" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span>
@@ -162,7 +161,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="creating-partial-mocks">
-<h3>Creating partial mocks<a class="headerlink" href="#creating-partial-mocks" title="Permalink to this headline">¶</a></h3>
+<h2>Creating partial mocks<a class="headerlink" href="#creating-partial-mocks" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="n">SomeObject</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span>
@@ -199,7 +198,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="ensure-calls-are-made-in-specific-order">
-<h3>Ensure calls are made in specific order<a class="headerlink" href="#ensure-calls-are-made-in-specific-order" title="Permalink to this headline">¶</a></h3>
+<h2>Ensure calls are made in specific order<a class="headerlink" href="#ensure-calls-are-made-in-specific-order" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="n">SomeObject</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span>
@@ -255,7 +254,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="raising-exceptions">
-<h3>Raising exceptions<a class="headerlink" href="#raising-exceptions" title="Permalink to this headline">¶</a></h3>
+<h2>Raising exceptions<a class="headerlink" href="#raising-exceptions" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">SomeException</span><span class="p">(</span><span class="s">&quot;message&quot;</span><span class="p">)</span>
@@ -291,7 +290,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="override-new-instances-of-a-class">
-<h3>Override new instances of a class<a class="headerlink" href="#override-new-instances-of-a-class" title="Permalink to this headline">¶</a></h3>
+<h2>Override new instances of a class<a class="headerlink" href="#override-new-instances-of-a-class" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;somemodule.SomeClass&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">MockClass</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">MockClass</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">some_other_object</span>
@@ -322,7 +321,7 @@ object and use it in any way you want with no up-front configuration.</p>
 </div>
 </div>
 <div class="section" id="call-the-same-method-multiple-times">
-<h3>Call the same method multiple times<a class="headerlink" href="#call-the-same-method-multiple-times" title="Permalink to this headline">¶</a></h3>
+<h2>Call the same method multiple times<a class="headerlink" href="#call-the-same-method-multiple-times" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You don&#8217;t need to do <em>any</em> configuration to call <cite>mock.Mock()</cite> methods
@@ -369,7 +368,7 @@ how the mock was used.</p>
 </div>
 </div>
 <div class="section" id="mock-chained-methods">
-<h3>Mock chained methods<a class="headerlink" href="#mock-chained-methods" title="Permalink to this headline">¶</a></h3>
+<h2>Mock chained methods<a class="headerlink" href="#mock-chained-methods" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">method3</span> <span class="o">=</span> <span class="n">my_mock</span><span class="o">.</span><span class="n">method1</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">method2</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">method3</span>
@@ -416,7 +415,7 @@ how the mock was used.</p>
 </div>
 </div>
 <div class="section" id="mocking-a-context-manager">
-<h3>Mocking a context manager<a class="headerlink" href="#mocking-a-context-manager" title="Permalink to this headline">¶</a></h3>
+<h2>Mocking a context manager<a class="headerlink" href="#mocking-a-context-manager" title="Permalink to this headline">¶</a></h2>
 <p>Examples for mock and Dingus only (so far):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">()</span>
@@ -437,7 +436,7 @@ how the mock was used.</p>
 </div>
 </div>
 <div class="section" id="mocking-the-builtin-open-used-as-a-context-manager">
-<h3>Mocking the builtin open used as a context manager<a class="headerlink" href="#mocking-the-builtin-open-used-as-a-context-manager" title="Permalink to this headline">¶</a></h3>
+<h2>Mocking the builtin open used as a context manager<a class="headerlink" href="#mocking-the-builtin-open-used-as-a-context-manager" title="Permalink to this headline">¶</a></h2>
 <p>Examples for mock and Dingus only (so far):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">()</span>
@@ -475,7 +474,6 @@ how the mock was used.</p>
 <span class="go">&#39;some data&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;()&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">once</span><span class="p">()</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
