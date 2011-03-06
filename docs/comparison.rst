@@ -11,6 +11,7 @@
     import mox
     import somemodule
     import dingus
+    import fudge
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
@@ -38,6 +39,7 @@ The libraries are:
 * `mox <http://pypi.python.org/pypi/mox>`_
 * `Mocker <http://niemeyer.net/mocker>`_
 * `Dingus <http://pypi.python.org/pypi/dingus>`_
+* `fudge <http://farmdev.com/projects/fudge/>`_
 
 Some mocking tools are intentionally omitted: 
 
@@ -47,7 +49,7 @@ Some mocking tools are intentionally omitted:
 Other mocking frameworks are not yet represented here:
 
 * `MiniMock <http://pypi.python.org/pypi/MiniMock>`_
-* `fudge <http://pypi.python.org/pypi/fudge>`_
+* `chai <http://pypi.python.org/pypi/chai>`_
 
 This comparison is by no means complete, and also may not be fully idiomatic
 for all the libraries represented. *Please* contribute corrections and missing
@@ -117,6 +119,15 @@ Simple fake object
     >>> assertEqual("calculated value", my_dingus.some_method())
     >>> assertEqual("value", my_dingus.some_attribute)
 
+    >>> # fudge
+    >>> my_fake = (fudge.Fake()
+    ...            .provides('some_method')
+    ...            .returns("calculated value")
+    ...            .has_attr(some_attribute="value"))
+    ...
+    >>> assertEqual("calculated value", my_fake.some_method())
+    >>> assertEqual("value", my_fake.some_attribute)
+
 
 Simple mock
 ~~~~~~~~~~~
@@ -162,6 +173,19 @@ Simple mock
     >>> assertEqual("value", my_dingus.some_method())
     >>> assert my_dingus.some_method.calls().once()
 
+    >>> # fudge
+    >>> @fudge.test
+    ... def test():
+    ...     my_fake = (fudge.Fake()
+    ...                .expects('some_method')
+    ...                .returns("value")
+    ...                .times_called(1))
+    ...
+    >>> test()
+    Traceback (most recent call last):
+    ...
+    AssertionError: fake:my_fake.some_method() was not called
+
 
 Creating partial mocks
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -201,9 +225,15 @@ Creating partial mocks
     >>> mocker.verify()
 
     >>> # Dingus
-    >>> object = SomeObject
-    >>> object.some_method = dingus.Dingus(return_value="value")
-    >>> assertEqual("value", object.some_method())
+    >>> SomeObject.some_method = dingus.Dingus(return_value="value")
+    >>> assertEqual("value", SomeObject.some_method())
+
+    >>> # fudge
+    >>> fake = fudge.Fake().is_callable().returns("<fudge-value>")
+    >>> with fudge.patched_context(SomeObject, 'some_method', fake):
+    ...     s = SomeObject()
+    ...     assertEqual("<fudge-value>", s.some_method())
+    ...
 
 
 Ensure calls are made in specific order
@@ -268,6 +298,21 @@ Ensure calls are made in specific order
     <Dingus ...>
     >>> assertEqual(['method1', 'method2'], [call.name for call in my_dingus.calls])
 
+    >>> # fudge
+    >>> @fudge.test
+    ... def test():
+    ...     my_fake = (fudge.Fake()
+    ...                .remember_order()
+    ...                .expects('method1')
+    ...                .expects('method2'))
+    ...     my_fake.method2()
+    ...     my_fake.method1()
+    ...
+    >>> test()
+    Traceback (most recent call last):
+    ...
+    AssertionError: Call #1 was fake:my_fake.method2(); Expected: #1 fake:my_fake.method1(), #2 fake:my_fake.method2(), end
+
 
 Raising exceptions
 ~~~~~~~~~~~~~~~~~~
@@ -311,6 +356,16 @@ Raising exceptions
     >>> my_dingus.some_method = dingus.exception_raiser(SomeException)
     >>> assertRaises(SomeException, my_dingus.some_method)
 
+    >>> # fudge
+    >>> my_fake = (fudge.Fake()
+    ...            .is_callable()
+    ...            .raises(SomeException("message")))
+    ...
+    >>> my_fake()
+    Traceback (most recent call last):
+    ...
+    SomeException: message
+
 
 Override new instances of a class
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -343,6 +398,14 @@ Override new instances of a class
     >>> MockClass = dingus.Dingus(return_value=some_other_object)
     >>> with dingus.patch('somemodule.SomeClass', MockClass):
     ...     assertEqual(some_other_object, somemodule.SomeClass())
+
+    >>> # fudge
+    >>> @fudge.patch('somemodule.SomeClass')
+    ... def test(FakeClass):
+    ...     FakeClass.is_callable().returns(some_other_object)
+    ...     assertEqual(some_other_object, somemodule.SomeClass())
+    ...
+    >>> test()
 
 
 Call the same method multiple times
@@ -393,6 +456,17 @@ Call the same method multiple times
     >>> my_dingus.some_method()
     <Dingus ...>
     >>> assert len(my_dingus.calls('some_method')) == 2
+
+    >>> # fudge
+    >>> @fudge.test
+    ... def test():
+    ...     my_fake = fudge.Fake().expects('some_method').times_called(2)
+    ...     my_fake.some_method()
+    ...
+    >>> test()
+    Traceback (most recent call last):
+    ...
+    AssertionError: fake:my_fake.some_method() was called 1 time(s). Expected 2.
 
 
 Mock chained methods
@@ -445,11 +519,27 @@ Mock chained methods
     >>> assertEqual('some value', my_dingus.method1().method2().method3(1, 2))
     >>> assert method3.calls('()', 1, 2).once()
 
+    >>> # fudge
+    >>> @fudge.test
+    ... def test():
+    ...     my_fake = fudge.Fake()
+    ...     (my_fake
+    ...      .expects('method1')
+    ...      .returns_fake()
+    ...      .expects('method2')
+    ...      .returns_fake()
+    ...      .expects('method3')
+    ...      .with_args(1, 2)
+    ...      .returns('some value'))
+    ...     assertEqual('some value', my_fake.method1().method2().method3(1, 2))
+    ...
+    >>> test()
+
 
 Mocking a context manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Examples for mock and Dingus only (so far):
+Examples for mock, Dingus, and fudge only (so far):
 
 .. doctest::
 
@@ -469,11 +559,17 @@ Examples for mock and Dingus only (so far):
     >>> assert my_dingus.__enter__.calls()
     >>> assert my_dingus.__exit__.calls('()', None, None, None)
 
+    >>> # fudge
+    >>> my_fake = fudge.Fake().provides('__enter__').provides('__exit__')
+    >>> with my_fake:
+    ...     pass
+    ...
+
 
 Mocking the builtin open used as a context manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Examples for mock and Dingus only (so far):
+Examples for mock, Dingus, and fudge only (so far):
 
 .. doctest::
 
@@ -512,6 +608,22 @@ Examples for mock and Dingus only (so far):
     >>> data
     'some data'
     >>> assert my_dingus.calls('()', 'foo').once()
+
+    >>> # fudge
+    >>> from contextlib import contextmanager
+    >>> from StringIO import StringIO
+    >>> @contextmanager
+    ... def fake_file(filename):
+    ...     yield StringIO('sekrets')
+    ...
+    >>> with fudge.patch('__builtin__.open') as fake_open:
+    ...     fake_open.is_callable().calls(fake_file)
+    ...     with open('/etc/password') as f:
+    ...         data = f.read()
+    ...
+    fake:__builtin__.open
+    >>> data
+    'sekrets'
 
 ==========================
  History of This Document
