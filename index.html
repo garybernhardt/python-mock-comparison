@@ -163,9 +163,8 @@ object and use it in any way you want with no up-front configuration.</p>
 <div class="section" id="creating-partial-mocks">
 <h2>Creating partial mocks<a class="headerlink" href="#creating-partial-mocks" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="n">SomeObject</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SomeObject</span><span class="o">.</span><span class="n">some_method</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">&#39;value&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">SomeObject</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Flexmock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">flexmock</span><span class="p">(</span><span class="n">SomeObject</span><span class="p">)</span><span class="o">.</span><span class="n">should_receive</span><span class="p">(</span><span class="s">&quot;some_method&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">)</span>
@@ -477,14 +476,6 @@ how the mock was used.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
 </div>
 
 
