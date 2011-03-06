@@ -225,9 +225,8 @@ Creating partial mocks
     >>> mocker.verify()
 
     >>> # Dingus
-    >>> object = SomeObject
-    >>> object.some_method = dingus.Dingus(return_value="value")
-    >>> assertEqual("value", object.some_method())
+    >>> SomeObject.some_method = dingus.Dingus(return_value="value")
+    >>> assertEqual("value", SomeObject.some_method())
 
     >>> # fudge
     >>> fake = fudge.Fake().is_callable().returns("<fudge-value>")
