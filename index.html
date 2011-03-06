@@ -48,6 +48,7 @@ popular Python mocking libraries and frameworks.</p>
 <li><a class="reference external" href="http://pypi.python.org/pypi/mox">mox</a></li>
 <li><a class="reference external" href="http://niemeyer.net/mocker">Mocker</a></li>
 <li><a class="reference external" href="http://pypi.python.org/pypi/dingus">Dingus</a></li>
+<li><a class="reference external" href="http://farmdev.com/projects/fudge/">fudge</a></li>
 </ul>
 <p>Some mocking tools are intentionally omitted:</p>
 <ul class="simple">
@@ -57,7 +58,7 @@ popular Python mocking libraries and frameworks.</p>
 <p>Other mocking frameworks are not yet represented here:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://pypi.python.org/pypi/MiniMock">MiniMock</a></li>
-<li><a class="reference external" href="http://pypi.python.org/pypi/fudge">fudge</a></li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/chai">chai</a></li>
 </ul>
 <p>This comparison is by no means complete, and also may not be fully idiomatic
 for all the libraries represented. <em>Please</em> contribute corrections and missing
@@ -115,6 +116,15 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">... </span>                          <span class="n">some_method__returns</span><span class="o">=</span><span class="s">&quot;calculated value&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;calculated value&quot;</span><span class="p">,</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">some_attribute</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_fake</span> <span class="o">=</span> <span class="p">(</span><span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span>
+<span class="gp">... </span>           <span class="o">.</span><span class="n">provides</span><span class="p">(</span><span class="s">&#39;some_method&#39;</span><span class="p">)</span>
+<span class="gp">... </span>           <span class="o">.</span><span class="n">returns</span><span class="p">(</span><span class="s">&quot;calculated value&quot;</span><span class="p">)</span>
+<span class="gp">... </span>           <span class="o">.</span><span class="n">has_attr</span><span class="p">(</span><span class="n">some_attribute</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;calculated value&quot;</span><span class="p">,</span> <span class="n">my_fake</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">my_fake</span><span class="o">.</span><span class="n">some_attribute</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -153,6 +163,19 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">(</span><span class="n">some_method__returns</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span><span class="o">.</span><span class="n">calls</span><span class="p">()</span><span class="o">.</span><span class="n">once</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@fudge.test</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">my_fake</span> <span class="o">=</span> <span class="p">(</span><span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;some_method&#39;</span><span class="p">)</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">returns</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">times_called</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">AssertionError</span>: <span class="n-Identifier">fake:my_fake.some_method() was not called</span>
 </pre></div>
 </div>
 </div>
@@ -186,9 +209,15 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mocker</span><span class="o">.</span><span class="n">verify</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Dingus</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">object</span> <span class="o">=</span> <span class="n">SomeObject</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">object</span><span class="o">.</span><span class="n">some_method</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SomeObject</span><span class="o">.</span><span class="n">some_method</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">SomeObject</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fake</span> <span class="o">=</span> <span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span><span class="o">.</span><span class="n">is_callable</span><span class="p">()</span><span class="o">.</span><span class="n">returns</span><span class="p">(</span><span class="s">&quot;&lt;fudge-value&gt;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">fudge</span><span class="o">.</span><span class="n">patched_context</span><span class="p">(</span><span class="n">SomeObject</span><span class="p">,</span> <span class="s">&#39;some_method&#39;</span><span class="p">,</span> <span class="n">fake</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">s</span> <span class="o">=</span> <span class="n">SomeObject</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;&lt;fudge-value&gt;&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
+<span class="gp">...</span>
 </pre></div>
 </div>
 </div>
@@ -245,6 +274,21 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span>
 <span class="go">&lt;Dingus ...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">([</span><span class="s">&#39;method1&#39;</span><span class="p">,</span> <span class="s">&#39;method2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">call</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">calls</span><span class="p">])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@fudge.test</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">my_fake</span> <span class="o">=</span> <span class="p">(</span><span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">remember_order</span><span class="p">()</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;method1&#39;</span><span class="p">)</span>
+<span class="gp">... </span>               <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;method2&#39;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">my_fake</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">my_fake</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">AssertionError: Call #1 was fake:my_fake.method2(); Expected</span>: <span class="n-Identifier">#1 fake:my_fake.method1(), #2 fake:my_fake.method2(), end</span>
 </pre></div>
 </div>
 </div>
@@ -281,6 +325,16 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">exception_raiser</span><span class="p">(</span><span class="n">SomeException</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertRaises</span><span class="p">(</span><span class="n">SomeException</span><span class="p">,</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_fake</span> <span class="o">=</span> <span class="p">(</span><span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span>
+<span class="gp">... </span>           <span class="o">.</span><span class="n">is_callable</span><span class="p">()</span>
+<span class="gp">... </span>           <span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">SomeException</span><span class="p">(</span><span class="s">&quot;message&quot;</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_fake</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">SomeException</span>: <span class="n-Identifier">message</span>
 </pre></div>
 </div>
 </div>
@@ -312,6 +366,14 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">MockClass</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="n">some_other_object</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dingus</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;somemodule.SomeClass&#39;</span><span class="p">,</span> <span class="n">MockClass</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">assertEqual</span><span class="p">(</span><span class="n">some_other_object</span><span class="p">,</span> <span class="n">somemodule</span><span class="o">.</span><span class="n">SomeClass</span><span class="p">())</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@fudge.patch</span><span class="p">(</span><span class="s">&#39;somemodule.SomeClass&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">FakeClass</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">FakeClass</span><span class="o">.</span><span class="n">is_callable</span><span class="p">()</span><span class="o">.</span><span class="n">returns</span><span class="p">(</span><span class="n">some_other_object</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">assertEqual</span><span class="p">(</span><span class="n">some_other_object</span><span class="p">,</span> <span class="n">somemodule</span><span class="o">.</span><span class="n">SomeClass</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -360,6 +422,17 @@ how the mock was used.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span><span class="o">.</span><span class="n">some_method</span><span class="p">()</span>
 <span class="go">&lt;Dingus ...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_dingus</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;some_method&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@fudge.test</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">my_fake</span> <span class="o">=</span> <span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span><span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;some_method&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">times_called</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">my_fake</span><span class="o">.</span><span class="n">some_method</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="nc">AssertionError</span>: <span class="n-Identifier">fake:my_fake.some_method() was called 1 time(s). Expected 2.</span>
 </pre></div>
 </div>
 </div>
@@ -409,12 +482,28 @@ how the mock was used.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">method3</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&#39;some value&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">,</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span><span class="o">.</span><span class="n">method3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">method3</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;()&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">once</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@fudge.test</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">my_fake</span> <span class="o">=</span> <span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">my_fake</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;method1&#39;</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">returns_fake</span><span class="p">()</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;method2&#39;</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">returns_fake</span><span class="p">()</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">expects</span><span class="p">(</span><span class="s">&#39;method3&#39;</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">with_args</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="o">.</span><span class="n">returns</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">,</span> <span class="n">my_fake</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span><span class="o">.</span><span class="n">method3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="mocking-a-context-manager">
 <h2>Mocking a context manager<a class="headerlink" href="#mocking-a-context-manager" title="Permalink to this headline">¶</a></h2>
-<p>Examples for mock and Dingus only (so far):</p>
+<p>Examples for mock, Dingus, and fudge only (so far):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">my_mock</span><span class="p">:</span>
@@ -430,12 +519,18 @@ how the mock was used.</p>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">__enter__</span><span class="o">.</span><span class="n">calls</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">__exit__</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;()&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_fake</span> <span class="o">=</span> <span class="n">fudge</span><span class="o">.</span><span class="n">Fake</span><span class="p">()</span><span class="o">.</span><span class="n">provides</span><span class="p">(</span><span class="s">&#39;__enter__&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">provides</span><span class="p">(</span><span class="s">&#39;__exit__&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">my_fake</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="mocking-the-builtin-open-used-as-a-context-manager">
 <h2>Mocking the builtin open used as a context manager<a class="headerlink" href="#mocking-the-builtin-open-used-as-a-context-manager" title="Permalink to this headline">¶</a></h2>
-<p>Examples for mock and Dingus only (so far):</p>
+<p>Examples for mock, Dingus, and fudge only (so far):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">MagicMock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;__builtin__.open&#39;</span><span class="p">,</span> <span class="n">my_mock</span><span class="p">):</span>
@@ -471,6 +566,22 @@ how the mock was used.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
 <span class="go">&#39;some data&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;()&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">once</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fudge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@contextmanager</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">fake_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">yield</span> <span class="n">StringIO</span><span class="p">(</span><span class="s">&#39;sekrets&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">fudge</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;__builtin__.open&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fake_open</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">fake_open</span><span class="o">.</span><span class="n">is_callable</span><span class="p">()</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="n">fake_file</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/etc/password&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="go">fake:__builtin__.open</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">&#39;sekrets&#39;</span>
 </pre></div>
 </div>
 </div>
