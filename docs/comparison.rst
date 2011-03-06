@@ -48,6 +48,7 @@ Other mocking frameworks are not yet represented here:
 
 * `MiniMock <http://pypi.python.org/pypi/MiniMock>`_
 * `fudge <http://pypi.python.org/pypi/fudge>`_
+* `chai <http://pypi.python.org/pypi/chai>`_
 
 This comparison is by no means complete, and also may not be fully idiomatic
 for all the libraries represented. *Please* contribute corrections and missing
