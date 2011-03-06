@@ -177,9 +177,8 @@ Creating partial mocks
 .. doctest:: creating_partial_mocks
 
     >>> # mock
-    >>> my_mock = mock.Mock(spec=SomeObject)
-    >>> my_mock.some_method.return_value = "value"
-    >>> assertEqual("value", my_mock.some_method())
+    >>> SomeObject.some_method = mock.Mock(return_value='value')
+    >>> assertEqual("value", SomeObject.some_method())
 
     >>> # Flexmock
     >>> flexmock(SomeObject).should_receive("some_method").and_return('value')
