@@ -55,13 +55,6 @@ comparisons to the `GitHub project
 <https://github.com/garybernhardt/python-mock-comparison>`_. Pull requests are
 appreciated.
 
-History of this document:
-
-* Originally created by the `Mox project <https://code.google.com/p/pymox/wiki/MoxComparison>`_
-* Extended for `flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by Herman Sheremetyev
-* Further edited for use in the `mock documentation <http://www.voidspace.org.uk/python/mock/compare.html>`_ by Michael Foord
-* Generalizd with doctests for all libraries by Gary Bernhardt
-
 .. note::
 
     Many examples tasks here were originally created by Mox, which is a mocking
@@ -515,4 +508,13 @@ Examples for mock and Dingus only (so far):
     >>> data
     'some data'
     >>> assert my_dingus.calls('()', 'foo').once()
+
+==========================
+ History of This Document
+==========================
+
+* Originally created by the `Mox project <https://code.google.com/p/pymox/wiki/MoxComparison>`_
+* Extended for `flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by Herman Sheremetyev
+* Further edited for use in the `mock documentation <http://www.voidspace.org.uk/python/mock/compare.html>`_ by Michael Foord
+* Generalizd with doctests for all libraries by Gary Bernhardt and contributors
 
