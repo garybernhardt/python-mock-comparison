@@ -55,13 +55,6 @@ comparisons to the `GitHub project
 <https://github.com/garybernhardt/python-mock-comparison>`_. Pull requests are
 appreciated.
 
-History of this document:
-
-* Originally created by the `Mox project <https://code.google.com/p/pymox/wiki/MoxComparison>`_
-* Extended for `flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by Herman Sheremetyev
-* Further edited for use in the `mock documentation <http://www.voidspace.org.uk/python/mock/compare.html>`_ by Michael Foord
-* Generalizd with doctests for all libraries by Gary Bernhardt
-
 .. note::
 
     Many examples tasks here were originally created by Mox, which is a mocking
@@ -70,6 +63,9 @@ History of this document:
     make harder. In particular you can take a `Mock`, `MagicMock`, or Dingus
     object and use it in any way you want with no up-front configuration.
 
+=================
+ The Comparisons
+=================
 
 Simple fake object
 ~~~~~~~~~~~~~~~~~~
@@ -89,7 +85,8 @@ Simple fake object
     >>> assertEqual("value", my_mock.some_attribute)
 
     >>> # Flexmock
-    >>> some_object = flexmock(some_method=lambda: "calculated value", some_attribute="value")
+    >>> some_object = flexmock(some_method=lambda: "calculated value",
+    ...                        some_attribute="value")
     >>> assertEqual("calculated value", some_object.some_method())
     >>> assertEqual("value", some_object.some_attribute)
 
@@ -374,7 +371,8 @@ Call the same method multiple times
     <flexmock.Expectation object at ...>
 
     >>> # Mox
-    >>> # (does not support variable number of calls, so you need to create a new entry for each explicit call)
+    >>> # (does not support variable number of calls, so you need to create a
+    >>> # new entry for each explicit call)
     >>> my_mock = mox.MockObject(some_object)
     >>> my_mock.some_method(mox.IgnoreArg(), mox.IgnoreArg())
     <mox.MockMethod object at ...>
@@ -410,14 +408,15 @@ Mock chained methods
     >>> method3.assert_called_once_with(1, 2)
 
     >>> # Flexmock
-    >>> # (intermediate method calls are automatically assigned to temporary fake objects
-    >>> # and can be called with any arguments)
+    >>> # (intermediate method calls are automatically assigned to temporary
+    >>> # fake objects and can be called with any arguments)
     >>> arg1, arg2 = 'arg1', 'arg2'
     >>> flexmock(some_object).should_receive(
     ...     'method1.method2.method3'
     ... ).with_args(arg1, arg2).and_return('some value')
     <flexmock.Expectation object at ...>
-    >>> assertEqual('some value', some_object.method1().method2().method3(arg1, arg2))
+    >>> assertEqual('some value',
+    ...             some_object.method1().method2().method3(arg1, arg2))
 
     # >>> # Mox
     # >>> # XXX FAILING
@@ -432,7 +431,8 @@ Mock chained methods
     # >>> my_mock3.method3(arg1, arg2).AndReturn('some_value')
     # 'some_value'
     # >>> mox.Mox().ReplayAll()
-    # >>> assertEqual("some_value", some_object.method1().method2().method3(arg1, arg2))
+    # >>> assertEqual("some_value",
+    # ...             some_object.method1().method2().method3(arg1, arg2))
     # >>> self.mox.VerifyAll()
 
     >>> # Mocker
@@ -512,4 +512,13 @@ Examples for mock and Dingus only (so far):
     >>> data
     'some data'
     >>> assert my_dingus.calls('()', 'foo').once()
+
+==========================
+ History of This Document
+==========================
+
+* Originally created by the `Mox project <https://code.google.com/p/pymox/wiki/MoxComparison>`_
+* Extended for `flexmock and mock <http://has207.github.com/flexmock/compare.html>`_ by Herman Sheremetyev
+* Further edited for use in the `mock documentation <http://www.voidspace.org.uk/python/mock/compare.html>`_ by Michael Foord
+* Generalizd with doctests for all libraries by Gary Bernhardt and contributors
 
