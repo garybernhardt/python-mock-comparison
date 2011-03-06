@@ -70,6 +70,9 @@ History of this document:
     make harder. In particular you can take a `Mock`, `MagicMock`, or Dingus
     object and use it in any way you want with no up-front configuration.
 
+=================
+ The Comparisons
+=================
 
 Simple fake object
 ~~~~~~~~~~~~~~~~~~
