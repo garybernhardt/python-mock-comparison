@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
     <title>Python Mock Library Comparison v1.0 documentation</title>
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/python_mock_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -30,11 +30,10 @@
       <ul>
         <li><a href="#">Python Mock Library Comparison v1.0 documentation</a> &raquo;</li> 
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
-        <div class="bodywrapper">
           <div class="body">
             
   <div class="toctree-wrapper compound">
@@ -64,13 +63,6 @@ popular Python mocking libraries and frameworks.</p>
 for all the libraries represented. <em>Please</em> contribute corrections and missing
 comparisons to the <a class="reference external" href="https://github.com/garybernhardt/python-mock-comparison">GitHub project</a>. Pull requests are
 appreciated.</p>
-<p>History of this document:</p>
-<ul class="simple">
-<li>Originally created by the <a class="reference external" href="https://code.google.com/p/pymox/wiki/MoxComparison">Mox project</a></li>
-<li>Extended for <a class="reference external" href="http://has207.github.com/flexmock/compare.html">flexmock and mock</a> by Herman Sheremetyev</li>
-<li>Further edited for use in the <a class="reference external" href="http://www.voidspace.org.uk/python/mock/compare.html">mock documentation</a> by Michael Foord</li>
-<li>Generalizd with doctests for all libraries by Gary Bernhardt</li>
-</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Many examples tasks here were originally created by Mox, which is a mocking
@@ -79,6 +71,9 @@ naturally exemplify tasks that frameworks are good at and not the ones they
 make harder. In particular you can take a <cite>Mock</cite>, <cite>MagicMock</cite>, or Dingus
 object and use it in any way you want with no up-front configuration.</p>
 </div>
+</div>
+<div class="section" id="the-comparisons">
+<h1>The Comparisons<a class="headerlink" href="#the-comparisons" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="simple-fake-object">
 <h2>Simple fake object<a class="headerlink" href="#simple-fake-object" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># mock</span>
@@ -89,7 +84,8 @@ object and use it in any way you want with no up-front configuration.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">my_mock</span><span class="o">.</span><span class="n">some_attribute</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Flexmock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span> <span class="o">=</span> <span class="n">flexmock</span><span class="p">(</span><span class="n">some_method</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s">&quot;calculated value&quot;</span><span class="p">,</span> <span class="n">some_attribute</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span> <span class="o">=</span> <span class="n">flexmock</span><span class="p">(</span><span class="n">some_method</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="s">&quot;calculated value&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">some_attribute</span><span class="o">=</span><span class="s">&quot;value&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;calculated value&quot;</span><span class="p">,</span> <span class="n">some_object</span><span class="o">.</span><span class="n">some_method</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">some_object</span><span class="o">.</span><span class="n">some_attribute</span><span class="p">)</span>
 
@@ -342,7 +338,8 @@ how the mock was used.</p>
 <span class="go">&lt;flexmock.Expectation object at ...&gt;</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Mox</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># (does not support variable number of calls, so you need to create a new entry for each explicit call)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># (does not support variable number of calls, so you need to create a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># new entry for each explicit call)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mox</span><span class="o">.</span><span class="n">MockObject</span><span class="p">(</span><span class="n">some_object</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span><span class="o">.</span><span class="n">some_method</span><span class="p">(</span><span class="n">mox</span><span class="o">.</span><span class="n">IgnoreArg</span><span class="p">(),</span> <span class="n">mox</span><span class="o">.</span><span class="n">IgnoreArg</span><span class="p">())</span>
 <span class="go">&lt;mox.MockMethod object at ...&gt;</span>
@@ -376,14 +373,15 @@ how the mock was used.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">method3</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Flexmock</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># (intermediate method calls are automatically assigned to temporary fake objects</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># and can be called with any arguments)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># (intermediate method calls are automatically assigned to temporary</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># fake objects and can be called with any arguments)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span> <span class="o">=</span> <span class="s">&#39;arg1&#39;</span><span class="p">,</span> <span class="s">&#39;arg2&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">flexmock</span><span class="p">(</span><span class="n">some_object</span><span class="p">)</span><span class="o">.</span><span class="n">should_receive</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s">&#39;method1.method2.method3&#39;</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">with_args</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">)</span>
 <span class="go">&lt;flexmock.Expectation object at ...&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">,</span> <span class="n">some_object</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span><span class="o">.</span><span class="n">method3</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some value&#39;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">some_object</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span><span class="o">.</span><span class="n">method3</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">))</span>
 
 <span class="go"># &gt;&gt;&gt; # Mox</span>
 <span class="go"># &gt;&gt;&gt; # XXX FAILING</span>
@@ -398,7 +396,8 @@ how the mock was used.</p>
 <span class="go"># &gt;&gt;&gt; my_mock3.method3(arg1, arg2).AndReturn(&#39;some_value&#39;)</span>
 <span class="go"># &#39;some_value&#39;</span>
 <span class="go"># &gt;&gt;&gt; mox.Mox().ReplayAll()</span>
-<span class="go"># &gt;&gt;&gt; assertEqual(&quot;some_value&quot;, some_object.method1().method2().method3(arg1, arg2))</span>
+<span class="go"># &gt;&gt;&gt; assertEqual(&quot;some_value&quot;,</span>
+<span class="go"># ...             some_object.method1().method2().method3(arg1, arg2))</span>
 <span class="go"># &gt;&gt;&gt; self.mox.VerifyAll()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Mocker</span>
@@ -476,45 +475,19 @@ how the mock was used.</p>
 </div>
 </div>
 </div>
+<div class="section" id="history-of-this-document">
+<h1>History of This Document<a class="headerlink" href="#history-of-this-document" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Originally created by the <a class="reference external" href="https://code.google.com/p/pymox/wiki/MoxComparison">Mox project</a></li>
+<li>Extended for <a class="reference external" href="http://has207.github.com/flexmock/compare.html">flexmock and mock</a> by Herman Sheremetyev</li>
+<li>Further edited for use in the <a class="reference external" href="http://www.voidspace.org.uk/python/mock/compare.html">mock documentation</a> by Michael Foord</li>
+<li>Generalizd with doctests for all libraries by Gary Bernhardt and contributors</li>
+</ul>
+</div>
 </div>
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html#document-comparison">Python Mock Library Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#simple-fake-object">Simple fake object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#simple-mock">Simple mock</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#creating-partial-mocks">Creating partial mocks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#ensure-calls-are-made-in-specific-order">Ensure calls are made in specific order</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#raising-exceptions">Raising exceptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#override-new-instances-of-a-class">Override new instances of a class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#call-the-same-method-multiple-times">Call the same method multiple times</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#mock-chained-methods">Mock chained methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#mocking-a-context-manager">Mocking a context manager</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#mocking-the-builtin-open-used-as-a-context-manager">Mocking the builtin open used as a context manager</a></li>
-</ul>
-</li>
-</ul>
-
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
       </div>
       <div class="clearer"></div>
     </div>
@@ -525,8 +498,6 @@ how the mock was used.</p>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Gary Bernhardt.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>
