@@ -1,0 +1,12 @@
+#
+# These libraries are required to build/test the docs.
+# Run:
+#   pip install -r requirements.txt
+#
+sphinx
+mock
+flexmock
+mox
+dingus
+mocker
+fudge>=1.0.2
