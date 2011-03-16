@@ -12,6 +12,7 @@
     import somemodule
     import dingus
     import fudge
+    from mocker import Mocker
 
     def assertEqual(a, b):
         assert a == b, ("%r != %r" % (a, b))
@@ -62,8 +63,8 @@ appreciated.
     Many examples tasks here were originally created by Mox, which is a mocking
     *framework* rather than a *library* like mock or Dingus. Some tasks shown
     naturally exemplify tasks that frameworks are good at and not the ones they
-    make harder. In particular you can take a `Mock`, `MagicMock`, or Dingus
-    object and use it in any way you want with no up-front configuration.
+    make harder. In particular you can take a `Mock`, `MagicMock`, FlexMock
+    or Dingus object and use it in any way you want with no up-front configuration.
 
 =================
  The Comparisons
@@ -72,14 +73,10 @@ appreciated.
 Simple fake object
 ~~~~~~~~~~~~~~~~~~
 
-.. testsetup:: simple_fake_object
-
-    from mocker import Mocker
-    mocker = Mocker()
 
 .. doctest:: simple_fake_object
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock()
     >>> my_mock.some_method.return_value = "calculated value"
     >>> my_mock.some_attribute = "value"
@@ -88,7 +85,7 @@ Simple fake object
 
     >>> # Flexmock
     >>> some_object = flexmock(some_method=lambda: "calculated value",
-    ...                        some_attribute="value")
+    ...                          some_attribute="value")
     >>> assertEqual("calculated value", some_object.some_method())
     >>> assertEqual("value", some_object.some_attribute)
 
@@ -102,6 +99,7 @@ Simple fake object
     >>> assertEqual("value", my_mock.some_attribute)
 
     >>> # Mocker
+    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
@@ -119,7 +117,7 @@ Simple fake object
     >>> assertEqual("calculated value", my_dingus.some_method())
     >>> assertEqual("value", my_dingus.some_attribute)
 
-    >>> # fudge
+    >>> # Fudge
     >>> my_fake = (fudge.Fake()
     ...            .provides('some_method')
     ...            .returns("calculated value")
@@ -132,14 +130,9 @@ Simple fake object
 Simple mock
 ~~~~~~~~~~~
 
-.. testsetup:: simple_mock
-
-    from mocker import Mocker
-    mocker = Mocker()
-
 .. doctest:: simple_mock
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock()
     >>> my_mock.some_method.return_value = "value"
     >>> assertEqual("value", my_mock.some_method())
@@ -160,6 +153,7 @@ Simple mock
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
+    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
@@ -173,7 +167,7 @@ Simple mock
     >>> assertEqual("value", my_dingus.some_method())
     >>> assert my_dingus.some_method.calls().once()
 
-    >>> # fudge
+    >>> # Fudge
     >>> @fudge.test
     ... def test():
     ...     my_fake = (fudge.Fake()
@@ -190,14 +184,9 @@ Simple mock
 Creating partial mocks
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. testsetup:: creating_partial_mocks
-
-    from mocker import Mocker
-    mocker = Mocker()
-
 .. doctest:: creating_partial_mocks
 
-    >>> # mock
+    >>> # Mock
     >>> SomeObject.some_method = mock.Mock(return_value='value')
     >>> assertEqual("value", SomeObject.some_method())
 
@@ -215,6 +204,7 @@ Creating partial mocks
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
+    >>> mocker = Mocker()
     >>> some_object = somemodule.SomeClass()
     >>> my_mock = mocker.proxy(some_object)
     >>> my_mock.Get()
@@ -228,7 +218,7 @@ Creating partial mocks
     >>> SomeObject.some_method = dingus.Dingus(return_value="value")
     >>> assertEqual("value", SomeObject.some_method())
 
-    >>> # fudge
+    >>> # Fudge
     >>> fake = fudge.Fake().is_callable().returns("<fudge-value>")
     >>> with fudge.patched_context(SomeObject, 'some_method', fake):
     ...     s = SomeObject()
@@ -239,14 +229,9 @@ Creating partial mocks
 Ensure calls are made in specific order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. testsetup:: calls_in_specific_order
-
-    from mocker import Mocker
-    mocker = Mocker()
-
 .. doctest:: calls_in_specific_order
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock(spec=SomeObject)
     >>> my_mock.method1()
     <mock.Mock object at 0x...>
@@ -275,6 +260,7 @@ Ensure calls are made in specific order
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
+    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> with mocker.order():
     ...     my_mock.method1()
@@ -298,7 +284,7 @@ Ensure calls are made in specific order
     <Dingus ...>
     >>> assertEqual(['method1', 'method2'], [call.name for call in my_dingus.calls])
 
-    >>> # fudge
+    >>> # Fudge
     >>> @fudge.test
     ... def test():
     ...     my_fake = (fudge.Fake()
@@ -317,14 +303,9 @@ Ensure calls are made in specific order
 Raising exceptions
 ~~~~~~~~~~~~~~~~~~
 
-.. testsetup:: raising_exceptions
-
-    from mocker import Mocker
-    mocker = Mocker()
-
 .. doctest:: raising_exceptions
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock()
     >>> my_mock.some_method.side_effect = SomeException("message")
     >>> assertRaises(SomeException, my_mock.some_method)
@@ -343,6 +324,7 @@ Raising exceptions
     >>> mox.Verify(my_mock)
 
     >>> # Mocker
+    >>> mocker = Mocker()
     >>> my_mock = mocker.mock()
     >>> my_mock.some_method()
     <mocker.Mock object at ...>
@@ -356,7 +338,7 @@ Raising exceptions
     >>> my_dingus.some_method = dingus.exception_raiser(SomeException)
     >>> assertRaises(SomeException, my_dingus.some_method)
 
-    >>> # fudge
+    >>> # Fudge
     >>> my_fake = (fudge.Fake()
     ...            .is_callable()
     ...            .raises(SomeException("message")))
@@ -372,24 +354,26 @@ Override new instances of a class
 
 .. doctest::
 
-    >>> # mock
+    >>> # Mock
     >>> with mock.patch('somemodule.SomeClass') as MockClass:
     ...     MockClass.return_value = some_other_object
     ...     assertEqual(some_other_object, somemodule.SomeClass())
     ...
 
     >>> # Flexmock
-    >>> flexmock(somemodule.SomeClass, new_instances=some_other_object)
-    <flexmock.UnittestFlexMock object at ...>
+    >>> flexmock(somemodule.SomeClass).new_instances(some_other_object)
+    <flexmock.Expectation object at ...>
     >>> assertEqual(some_other_object, somemodule.SomeClass())
 
-    # >>> # Mox
-    # >>> # XXX FAILING
-    # >>> # (you will probably have mox.Mox() available as self.mox in a real test)
-    # >>> mox.Mox().StubOutWithMock(somemodule, 'SomeClass', use_mock_anything=True)
-    # >>> somemodule.SomeClass().AndReturn(some_other_object)
-    # >>> mox.ReplayAll()
-    # >>> assertEqual(some_other_object, somemodule.SomeClass())
+    >>> # Mox
+    >>> # normally we'd have access to self.mox (defining it here for the doctest)
+    >>> self_mox = mox.Mox()
+    >>> my_mock = self_mox.StubOutWithMock(somemodule, 'SomeClass', use_mock_anything=True)
+    >>> somemodule.SomeClass().AndReturn(some_other_object)
+    <somemodule.SomeClass object at ...>
+    >>> self_mox.ReplayAll()
+    >>> assertEqual(some_other_object, somemodule.SomeClass())
+    >>> self_mox.VerifyAll()
 
     >>> # Mocker
     >>> # (TODO)
@@ -399,7 +383,7 @@ Override new instances of a class
     >>> with dingus.patch('somemodule.SomeClass', MockClass):
     ...     assertEqual(some_other_object, somemodule.SomeClass())
 
-    >>> # fudge
+    >>> # Fudge
     >>> @fudge.patch('somemodule.SomeClass')
     ... def test(FakeClass):
     ...     FakeClass.is_callable().returns(some_other_object)
@@ -411,16 +395,9 @@ Override new instances of a class
 Call the same method multiple times
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note::
-
-    You don't need to do *any* configuration to call `mock.Mock()` methods
-    multiple times. Attributes like `call_count`, `call_args_list` and
-    `method_calls` provide various different ways of making assertions about
-    how the mock was used.
-
 .. doctest::
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock()
     >>> my_mock.some_method()
     <mock.Mock object at 0x...>
@@ -457,7 +434,7 @@ Call the same method multiple times
     <Dingus ...>
     >>> assert len(my_dingus.calls('some_method')) == 2
 
-    >>> # fudge
+    >>> # Fudge
     >>> @fudge.test
     ... def test():
     ...     my_fake = fudge.Fake().expects('some_method').times_called(2)
@@ -474,7 +451,7 @@ Mock chained methods
 
 .. doctest::
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.Mock()
     >>> method3 = my_mock.method1.return_value.method2.return_value.method3
     >>> method3.return_value = 'some value'
@@ -492,22 +469,23 @@ Mock chained methods
     >>> assertEqual('some value',
     ...             some_object.method1().method2().method3(arg1, arg2))
 
-    # >>> # Mox
-    # >>> # XXX FAILING
-    # >>> some_object = somemodule.SomeClass()
-    # >>> my_mock = mox.MockObject(some_object)
-    # >>> my_mock2 = mox.MockAnything()
-    # >>> my_mock3 = mox.MockAnything()
-    # >>> my_mock.method1().AndReturn(my_mock)
-    # <MockAnything instance>
-    # >>> my_mock2.method2().AndReturn(my_mock2)
-    # <MockAnything instance>
-    # >>> my_mock3.method3(arg1, arg2).AndReturn('some_value')
-    # 'some_value'
-    # >>> mox.Mox().ReplayAll()
-    # >>> assertEqual("some_value",
-    # ...             some_object.method1().method2().method3(arg1, arg2))
-    # >>> self.mox.VerifyAll()
+    >>> # Mox
+    >>> # normally we'd have access to self.mox (defining it here for the doctest)
+    >>> self_mox = mox.Mox()
+    >>> some_object = somemodule.SomeClass()
+    >>> my_mock = mox.MockObject(some_object)
+    >>> my_mock2 = mox.MockAnything()
+    >>> my_mock3 = mox.MockAnything()
+    >>> my_mock.method1().AndReturn(my_mock)                     #doctest: +SKIP
+    <MockAnything instance>
+    >>> my_mock2.method2().AndReturn(my_mock2)
+    <MockAnything instance>
+    >>> my_mock3.method3(arg1, arg2).AndReturn('some_value')
+    'some_value'
+    >>> self_mox.ReplayAll()
+    >>> assertEqual("some_value",
+    ...     some_object.method1().method2().method3(arg1, arg2)) #doctest: +SKIP
+    >>> self_mox.VerifyAll()
 
     >>> # Mocker
     >>> # (TODO)
@@ -519,7 +497,7 @@ Mock chained methods
     >>> assertEqual('some value', my_dingus.method1().method2().method3(1, 2))
     >>> assert method3.calls('()', 1, 2).once()
 
-    >>> # fudge
+    >>> # Fudge
     >>> @fudge.test
     ... def test():
     ...     my_fake = fudge.Fake()
@@ -536,80 +514,96 @@ Mock chained methods
     >>> test()
 
 
-Mocking a context manager
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Examples for mock, Dingus, and fudge only (so far):
+Stubbing out a context manager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. doctest::
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.MagicMock()
     >>> with my_mock:
     ...     pass
-    ...
-    >>> my_mock.__enter__.assert_called_with()
-    >>> my_mock.__exit__.assert_called_with(None, None, None)
 
-    >>> # Dingus (nothing special here; all dinguses are "magic mocks")
-    >>> my_dingus = dingus.Dingus()
-    >>> with my_dingus:
+    >>> # Flexmock
+    >>> my_mock = flexmock()
+    >>> with my_mock:
     ...     pass
-    ...
-    >>> assert my_dingus.__enter__.calls()
-    >>> assert my_dingus.__exit__.calls('()', None, None, None)
 
-    >>> # fudge
-    >>> my_fake = fudge.Fake().provides('__enter__').provides('__exit__')
-    >>> with my_fake:
+    >>> # Mox
+    >>> my_mock = mox.MockAnything()
+    >>> with my_mock:
     ...     pass
-    ...
+
+    # >>> # Dingus
+    # >>> # XXX Currently failing in Python 2.7
+    # >>> my_dingus = dingus.Dingus()
+    # >>> with my_dingus:
+    # ...     pass
+
+    # >>> # Fudge
+    # >>> # XXX Currently failing in Python 2.7
+    # >>> my_fake = fudge.Fake().provides('__enter__').provides('__exit__')
+    # >>> with my_fake:
+    # ...     pass
+    # ...
 
 
 Mocking the builtin open used as a context manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Examples for mock, Dingus, and fudge only (so far):
-
 .. doctest::
 
-    >>> # mock
+    >>> # Mock
     >>> my_mock = mock.MagicMock()
     >>> with mock.patch('__builtin__.open', my_mock):
     ...     manager = my_mock.return_value.__enter__.return_value
     ...     manager.read.return_value = 'some data'
     ...     with open('foo') as h:
-    ...         data = h.read()
-    ...
-    >>> data
-    'some data'
+    ...         assertEqual('some data', h.read())
     >>> my_mock.assert_called_once_with('foo')
 
-    >>> # mock (alternate)
+    >>> # Mock (alternate)
     >>> with mock.patch('__builtin__.open') as my_mock:
     ...     my_mock.return_value.__enter__ = lambda s: s
     ...     my_mock.return_value.__exit__ = mock.Mock()
     ...     my_mock.return_value.read.return_value = 'some data'
     ...     with open('foo') as h:
-    ...         data = h.read()
-    ...
-    >>> data
-    'some data'
+    ...         assertEqual('some data', h.read())
     >>> my_mock.assert_called_once_with('foo')
 
-    >>> # Dingus
-    >>> my_dingus = dingus.Dingus()
-    >>> with dingus.patch('__builtin__.open', my_dingus):
-    ...     file_ = open.return_value.__enter__.return_value
-    ...     file_.read.return_value = 'some data'
-    ...     with open('foo') as h:
-    ...         data = f.read()
-    ...
-    >>> data
-    'some data'
-    >>> assert my_dingus.calls('()', 'foo').once()
+    >>> # Flexmock
+    >>> flexmock(__builtins__).should_receive('open').once.with_args('foo').and_return(
+    ...     flexmock(read=lambda: 'some data')
+    ... )                                                        #doctest: +SKIP
+    >>> with open('foo') as f:
+    ...    assertEqual('some data', f.read())                    #doctest: +SKIP
 
-    >>> # fudge
+    >>> # Mox
+    >>> self_mox = mox.Mox()
+    >>> mock_file = mox.MockAnything()
+    >>> mock_file.read().AndReturn('some data')
+    'some data'
+    >>> self_mox.StubOutWithMock(__builtins__, 'open')           #doctest: +SKIP
+    >>> __builtins__.open('foo').AndReturn(mock_file)            #doctest: +SKIP
+    >>> self_mox.ReplayAll()
+    >>> with mock_file:
+    ...      assertEqual('some data', mock_file.read())
+    >>> self_mox.VerifyAll()
+
+    # >>> # Dingus
+    # >>> # XXX Currently failing in Python 2.7
+    # >>> my_dingus = dingus.Dingus()
+    # >>> with dingus.patch('__builtin__.open', my_dingus):
+    # ...     file_ = open.return_value.__enter__.return_value
+    # ...     file_.read.return_value = 'some data'
+    # ...     with open('foo') as h:
+    # ...         assertEqual('some data', h.read())
+    # ...
+    # >>> assert my_dingus.calls('()', 'foo').once()
+
+    >>> # Fudge
+    >>> # (This example doesn't ensure the open() is made exactly
+    >>> #  once like the others above)
     >>> from contextlib import contextmanager
     >>> from StringIO import StringIO
     >>> @contextmanager
@@ -622,8 +616,7 @@ Examples for mock, Dingus, and fudge only (so far):
     ...         data = f.read()
     ...
     fake:__builtin__.open
-    >>> data
-    'sekrets'
+    >>> assertEqual('sekrets', data)
 
 ==========================
  History of This Document

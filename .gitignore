@@ -2,3 +2,6 @@
 /.buildinfo
 /.doctrees
 /objects.inv
+/.tox
+/python_mock_comparison.egg-info
+*.pyc
