@@ -10,3 +10,4 @@ mox
 dingus
 mocker
 fudge>=1.0.2
+tox
