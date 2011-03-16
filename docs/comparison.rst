@@ -540,7 +540,7 @@ Stubbing out a context manager
     ...     pass
 
     >>> # Fudge
-    >>> my_fake = fudge.Fake().provides('__enter__')
+    >>> my_fake = fudge.Fake().provides('__enter__').provides('__exit__')
     >>> with my_fake:
     ...     pass
     ...
@@ -588,7 +588,7 @@ Mocking the builtin open used as a context manager
     ...      assertEqual('some data', mock_file.read())
     >>> self_mox.VerifyAll()
 
-    >>> Dingus
+    >>> # Dingus
     >>> my_dingus = dingus.Dingus()
     >>> with dingus.patch('__builtin__.open', my_dingus):
     ...     file_ = open.return_value.__enter__.return_value
