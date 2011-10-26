@@ -245,6 +245,10 @@ Ensure calls are made in specific order
     <flexmock.Expectation object at ...>
     >>> some_object.should_receive('method2').once.ordered.and_return('second thing')
     <flexmock.Expectation object at ...>
+    >>> SomeObject.method1()
+    'first thing'
+    >>> SomeObject.method2()
+    'second thing'
 
     >>> # Mox
     >>> my_mock = mox.MockObject(SomeObject)
@@ -409,6 +413,8 @@ Call the same method multiple times
     >>> some_object = flexmock()
     >>> flexmock(some_object).should_receive('some_method').at_least.twice
     <flexmock.Expectation object at ...>
+    >>> some_object.some_method()
+    >>> some_object.some_method()
 
     >>> # Mox
     >>> # (does not support variable number of calls, so you need to create a
@@ -534,11 +540,10 @@ Stubbing out a context manager
     >>> with my_mock:
     ...     pass
 
-    # >>> # Dingus
-    # >>> # XXX Currently failing in Python 2.7
-    # >>> my_dingus = dingus.Dingus()
-    # >>> with my_dingus:
-    # ...     pass
+    >>> # Dingus
+    >>> my_dingus = dingus.Dingus()
+    >>> with my_dingus:
+    ...     pass
 
     # >>> # Fudge
     # >>> # XXX Currently failing in Python 2.7
@@ -590,16 +595,15 @@ Mocking the builtin open used as a context manager
     ...      assertEqual('some data', mock_file.read())
     >>> self_mox.VerifyAll()
 
-    # >>> # Dingus
-    # >>> # XXX Currently failing in Python 2.7
-    # >>> my_dingus = dingus.Dingus()
-    # >>> with dingus.patch('__builtin__.open', my_dingus):
-    # ...     file_ = open.return_value.__enter__.return_value
-    # ...     file_.read.return_value = 'some data'
-    # ...     with open('foo') as h:
-    # ...         assertEqual('some data', h.read())
-    # ...
-    # >>> assert my_dingus.calls('()', 'foo').once()
+    >>> # Dingus
+    >>> my_dingus = dingus.Dingus()
+    >>> with dingus.patch('__builtin__.open', my_dingus):
+    ...     file_ = open.return_value.__enter__.return_value
+    ...     file_.read.return_value = 'some data'
+    ...     with open('foo') as h:
+    ...         assertEqual('some data', h.read())
+    ...
+    >>> assert my_dingus.calls('()', 'foo').once()
 
     >>> # Fudge
     >>> # (This example doesn't ensure the open() is made exactly
