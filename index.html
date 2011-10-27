@@ -177,7 +177,7 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
-<span class="nc">AssertionError</span>: <span class="n-Identifier">fake:my_fake.some_method() was not called</span>
+<span class="gr">AssertionError</span>: <span class="n">fake:my_fake.some_method() was not called</span>
 </pre></div>
 </div>
 </div>
@@ -240,6 +240,10 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="go">&lt;flexmock.Expectation object at ...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span><span class="o">.</span><span class="n">should_receive</span><span class="p">(</span><span class="s">&#39;method2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">once</span><span class="o">.</span><span class="n">ordered</span><span class="o">.</span><span class="n">and_return</span><span class="p">(</span><span class="s">&#39;second thing&#39;</span><span class="p">)</span>
 <span class="go">&lt;flexmock.Expectation object at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SomeObject</span><span class="o">.</span><span class="n">method1</span><span class="p">()</span>
+<span class="go">&#39;first thing&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SomeObject</span><span class="o">.</span><span class="n">method2</span><span class="p">()</span>
+<span class="go">&#39;second thing&#39;</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Mox</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mock</span> <span class="o">=</span> <span class="n">mox</span><span class="o">.</span><span class="n">MockObject</span><span class="p">(</span><span class="n">SomeObject</span><span class="p">)</span>
@@ -292,7 +296,7 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
-<span class="nc">AssertionError: Call #1 was fake:my_fake.method2(); Expected</span>: <span class="n-Identifier">#1 fake:my_fake.method1(), #2 fake:my_fake.method2(), end</span>
+<span class="gr">AssertionError: Call #1 was fake:my_fake.method2(); Expected</span>: <span class="n">#1 fake:my_fake.method1(), #2 fake:my_fake.method2(), end</span>
 </pre></div>
 </div>
 </div>
@@ -339,7 +343,7 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_fake</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
-<span class="nc">SomeException</span>: <span class="n-Identifier">message</span>
+<span class="gr">SomeException</span>: <span class="n">message</span>
 </pre></div>
 </div>
 </div>
@@ -398,6 +402,8 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span> <span class="o">=</span> <span class="n">flexmock</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">flexmock</span><span class="p">(</span><span class="n">some_object</span><span class="p">)</span><span class="o">.</span><span class="n">should_receive</span><span class="p">(</span><span class="s">&#39;some_method&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">at_least</span><span class="o">.</span><span class="n">twice</span>
 <span class="go">&lt;flexmock.Expectation object at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span><span class="o">.</span><span class="n">some_method</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">some_object</span><span class="o">.</span><span class="n">some_method</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Mox</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># (does not support variable number of calls, so you need to create a</span>
@@ -432,7 +438,7 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
-<span class="nc">AssertionError</span>: <span class="n-Identifier">fake:my_fake.some_method() was called 1 time(s). Expected 2.</span>
+<span class="gr">AssertionError</span>: <span class="n">fake:my_fake.some_method() was called 1 time(s). Expected 2.</span>
 </pre></div>
 </div>
 </div>
@@ -519,11 +525,10 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">my_mock</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">pass</span>
 
-<span class="go"># &gt;&gt;&gt; # Dingus</span>
-<span class="go"># &gt;&gt;&gt; # XXX Currently failing in Python 2.7</span>
-<span class="go"># &gt;&gt;&gt; my_dingus = dingus.Dingus()</span>
-<span class="go"># &gt;&gt;&gt; with my_dingus:</span>
-<span class="go"># ...     pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Dingus</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">my_dingus</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>
 
 <span class="go"># &gt;&gt;&gt; # Fudge</span>
 <span class="go"># &gt;&gt;&gt; # XXX Currently failing in Python 2.7</span>
@@ -573,16 +578,15 @@ or Dingus object and use it in any way you want with no up-front configuration.<
 <span class="gp">... </span>     <span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some data&#39;</span><span class="p">,</span> <span class="n">mock_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">self_mox</span><span class="o">.</span><span class="n">VerifyAll</span><span class="p">()</span>
 
-<span class="go"># &gt;&gt;&gt; # Dingus</span>
-<span class="go"># &gt;&gt;&gt; # XXX Currently failing in Python 2.7</span>
-<span class="go"># &gt;&gt;&gt; my_dingus = dingus.Dingus()</span>
-<span class="go"># &gt;&gt;&gt; with dingus.patch(&#39;__builtin__.open&#39;, my_dingus):</span>
-<span class="go"># ...     file_ = open.return_value.__enter__.return_value</span>
-<span class="go"># ...     file_.read.return_value = &#39;some data&#39;</span>
-<span class="go"># ...     with open(&#39;foo&#39;) as h:</span>
-<span class="go"># ...         assertEqual(&#39;some data&#39;, h.read())</span>
-<span class="go"># ...</span>
-<span class="go"># &gt;&gt;&gt; assert my_dingus.calls(&#39;()&#39;, &#39;foo&#39;).once()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Dingus</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dingus</span> <span class="o">=</span> <span class="n">dingus</span><span class="o">.</span><span class="n">Dingus</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dingus</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;__builtin__.open&#39;</span><span class="p">,</span> <span class="n">my_dingus</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">file_</span> <span class="o">=</span> <span class="nb">open</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">__enter__</span><span class="o">.</span><span class="n">return_value</span>
+<span class="gp">... </span>    <span class="n">file_</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&#39;some data&#39;</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">h</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">assertEqual</span><span class="p">(</span><span class="s">&#39;some data&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">my_dingus</span><span class="o">.</span><span class="n">calls</span><span class="p">(</span><span class="s">&#39;()&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">once</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Fudge</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># (This example doesn&#39;t ensure the open() is made exactly</span>
