@@ -482,9 +482,9 @@ Mock chained methods
     >>> my_mock = mox.MockObject(some_object)
     >>> my_mock2 = mox.MockAnything()
     >>> my_mock3 = mox.MockAnything()
-    >>> my_mock.method1().AndReturn(my_mock)                     #doctest: +SKIP
+    >>> my_mock.method1().AndReturn(my_mock2)                     #doctest: +SKIP
     <MockAnything instance>
-    >>> my_mock2.method2().AndReturn(my_mock2)
+    >>> my_mock2.method2().AndReturn(my_mock3)
     <MockAnything instance>
     >>> my_mock3.method3(arg1, arg2).AndReturn('some_value')
     'some_value'
